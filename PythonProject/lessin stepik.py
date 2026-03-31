@@ -24,4 +24,4 @@ def divide_number():
         except ZeroDivisionError:
             print("Ошибка: деление на ноль")
 print(divide_number())
-
+print("nikita gei")
