@@ -8,11 +8,22 @@
 
 
 #Ошибка: Введено некорректное число.
+import logging
+
+logging.basicConfig(
+    filename='errors.log',
+    level=logging.ERROR,
+    format='%(asctime)s - %(levelname)s - %(filename)s - %(lineno)d - %(message)s',
+    encoding='utf-8'
+)
+
+
 def divide_number():
     while True:
         try:
-            a = input("введите делимое: ")
-            b = input("Введите делитель:")
+            a = input("Введите делимое: ")
+            b = input("Введите делитель: ")
+
 
             num = float(a)
             num2 = float(b)
@@ -20,8 +31,15 @@ def divide_number():
             return num / num2
 
         except ValueError:
-            print("Ошибка: некорректное число")
+
+            logging.error("Ошибка: Введено некорректное число")
+            return "Ошибка: Введено некорректное число"
+
+
         except ZeroDivisionError:
-            print("Ошибка: деление на ноль")
+            logging.error ("Ошибка: Деление на ноль.")
+            return "Ошибка: Деление на ноль."
+
+
+
 print(divide_number())
-print("nikita gei")
