@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+
+read -p "Введите адрес (например, 8.8.8.8): " TARGET
+
+fail_count=0
+
+echo "Мониторинг $TARGET... (Нажми Ctrl+C для остановки)"
+
+while true; do
+    if ping -c 1 -W 1 "$TARGET" > /dev/null 2>&1; then
+        
+        fail_count=0
+        current_time=$(ping -c 1 -W 1 "$TARGET" | grep 'time=' | sed 's/.*time=\([0-9.]*\).*/\1/')
+        
+        is_slow=$(echo "$current_time" | awk '{if ($1 > 100) print "true"; else print "false"}')
+        
+        if [ "$is_slow" == "true" ]; then
+            echo "[$(date +%H:%M:%S)] ПРЕДУПРЕЖДЕНИЕ: Задержка $current_time мс"
+        fi
+
+    else
+        ((fail_count++))
+        
+        if [ $fail_count -ge 3 ]; then
+            echo "[$(date +%H:%M:%S)] КРИТИЧЕСКИ: Пинг не проходит 3 раза подряд!"
+        fi
+    fi
+
+    sleep 1
+done
