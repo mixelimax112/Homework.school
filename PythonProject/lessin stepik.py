@@ -1,45 +1,54 @@
-#Напишите функцию, которая выполняет деление двух чисел, введенных пользователем, и обрабатывает возможные ошибки.
-
-#Пример вывода:
-
-#Введите делимое: 345
-
-#Введите делитель: 5a
+import os
 
 
-#Ошибка: Введено некорректное число.
-import logging
-
-logging.basicConfig(
-    filename='errors.log',
-    level=logging.ERROR,
-    format='%(asctime)s - %(levelname)s - %(filename)s - %(lineno)d - %(message)s',
-    encoding='utf-8'
-)
+def process_files():
 
 
-def divide_number():
-    while True:
-        try:
-            a = input("Введите делимое: ")
-            b = input("Введите делитель: ")
+    log_file = input("Введите имя файла для поиска: ")
+    keyword = input("Введите ключевое слово: ")
 
+    if not os.path.exists(log_file):
+        print(f"Ошибка: файл {log_file} не найден!")
+    else:
+        found_lines = []
+        with open(log_file, "r", encoding="utf-8") as file:
+            for line in file:
+                if keyword in line:
+                    found_lines.append(line)
 
-            num = float(a)
-            num2 = float(b)
+        if found_lines:
+            new_log_name = f"{keyword}_{log_file}"
+            with open(new_log_name, "w", encoding="utf-8") as new_file:
+                new_file.writelines(found_lines)
+            print(f"Строки, содержащие '{keyword}', сохранены в {new_log_name}.")
+        else:
+            print(f"Совпадений для '{keyword}' не найдено. Файл не создан.")
 
-            return num / num2
-
-        except ValueError:
-
-            logging.error("Ошибка: Введено некорректное число")
-            return "Ошибка: Введено некорректное число"
-
-
-        except ZeroDivisionError:
-            logging.error ("Ошибка: Деление на ноль.")
-            return "Ошибка: Деление на ноль."
+    print("\n" + "=" * 40 + "\n")
 
 
 
-print(divide_number())
+    movies_file = input("Введите имя файла: ")
+
+    if not os.path.exists(movies_file):
+        print(f"Ошибка: файл {movies_file} не найден!")
+    else:
+        unique_lines = []
+        seen = set()
+
+        with open(movies_file, "r", encoding="utf-8") as file:
+            for line in file:
+
+                if line not in seen:
+                    unique_lines.append(line)
+                    seen.add(line)
+
+        new_movies_name = f"unique_{movies_file}"
+        with open(new_movies_name, "w", encoding="utf-8") as new_file:
+            new_file.writelines(unique_lines)
+
+        print(f"Дубликаты удалены. Уникальные строки сохранены в {new_movies_name}.")
+
+
+if __name__ == "__main__":
+    process_files()
