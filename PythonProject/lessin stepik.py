@@ -49,6 +49,5 @@ def process_files():
 
         print(f"Дубликаты удалены. Уникальные строки сохранены в {new_movies_name}.")
 
-
 if __name__ == "__main__":
     process_files()
